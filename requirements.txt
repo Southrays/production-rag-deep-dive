@@ -1,0 +1,15 @@
+langchain
+langgraph
+langsmith
+langchain-core
+langchain-community
+langchain-chroma
+langchain-experimental
+langchain-groq
+langchain-openai
+langchain-anthropic
+langchain-postgres
+
+python-dotenv
+chromadb
+rank_bm25
