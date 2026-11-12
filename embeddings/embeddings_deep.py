@@ -63,3 +63,44 @@ def similarity_search():
     print("Ranked by similarities")
     for doc, score in ranked_docs:
         print(f"{score:.4f}: {doc}")
+
+
+
+#Caching
+def embedding_caching():
+    import tempfile
+
+    from langchain_classic.embeddings import CacheBackedEmbeddings
+    from langchain_classic.storage import LocalFileStore
+
+
+    with tempfile.TemporaryDirectory() as tempdir:
+        file_store = LocalFileStore(tempdir)
+
+        cached_embeddings = CacheBackedEmbeddings.from_bytes_store(
+            embeddings,
+            file_store,
+            namespace=embeddings.model,
+        )
+
+        text = "What is Reinforcement learning"
+
+        #First call - Hits API
+        print("First call (API):")
+        vectors1 = cached_embeddings.embed_query(text)
+        print(f"Embeded {len(vectors1)} documents")
+
+        print("Second call (Cache):")
+        vectors2 = cached_embeddings.embed_query(text)
+        print(f"Embeded {len(vectors2)} documents")
+
+
+        #Verify same result
+        print(f"\nSame vectors: {np.allclose(vectors1[0], vectors2[0])}")
+
+
+
+if __name__ == "main":
+    batch_embeddings()
+    basic_embeddings()
+    embedding_caching()
